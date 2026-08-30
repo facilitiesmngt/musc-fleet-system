@@ -1,0 +1,402 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSC Fleet Management System</title>
+    <style>
+        :root {
+            --primary: #1F4E78;
+            --secondary: #2E75B6;
+            --bg-color: #F4F6F9;
+            --card-bg: #FFFFFF;
+            --text-main: #333333;
+            --border-color: #D9D9D9;
+            --danger: #C00000;
+            --success: #375623;
+            --warning: #ED7D31;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        nav {
+            width: 260px;
+            background: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+        }
+        nav a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        nav a:hover, nav a.active {
+            background-color: #F2F5F8;
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .tab-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            height: 90px;
+        }
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            background: #FAFAFA;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .checkbox-label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: var(--secondary);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        .warning-box {
+            background: #FFF3CD;
+            border: 1px solid #FFEEBA;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: #F8F9FA;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .stat-card p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>MUSC Fleet Management System</h1>
+    <span id="userSession">User: Admin / Technician</span>
+</header>
+
+<div class="main-layout">
+    <nav>
+        <a href="#" class="nav-link active" onclick="switchTab(event, 'dashboard')">1. Dashboard</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'assetManagement')">2. Vehicle / Asset Management</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'reports')">3. Reports & Data Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'operations')">4. Fleet Operations</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'serviceRepair')">5. Service & Repair Request</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'fuelUsage')">6. Fuel Usage Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'reminders')">7. Reminders</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'defectChecklist')">8. Symptom & Defect Checklist</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'costAnalysis')">9. Maintenance Cost Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'fuelManagement')">10. Fuel Management & OCR</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'ddcCourse')">11. Defensive Driving Course</a>
+    </nav>
+
+    <div style="flex: 1; padding: 30px; overflow-y: auto;">
+
+        <!-- 1. DASHBOARD -->
+        <div id="dashboard" class="tab-content active">
+            <h2>Dashboard Active Status Grid</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Active On-Road</h3><p>42</p></div>
+                <div class="stat-card"><h3>Booked / Reserved</h3><p>8</p></div>
+                <div class="stat-card"><h3>Under Maintenance</h3><p>3</p></div>
+                <div class="stat-card"><h3>Total Fleet Size</h3><p>53</p></div>
+            </div>
+            <p>Welcome to the MUSC Facilities Management Fleet Portal. Use the left navigation tabs to handle reservations, maintenance requests, or review analytics.</p>
+        </div>
+
+        <!-- 2. VEHICLE / ASSET MANAGEMENT -->
+        <div id="assetManagement" class="tab-content">
+            <h2>Vehicle / Asset Management</h2>
+            <div class="form-group">
+                <label>Filter Asset View</label>
+                <select>
+                    <option>All Vehicles</option>
+                    <option>Assigned - Active</option>
+                    <option>Unassigned - Inactive</option>
+                    <option>Archived / Disposed</option>
+                </select>
+            </div>
+            <table>
+                <tr><th>Vehicle ID</th><th>Nickname</th><th>Asset Type</th><th>Department</th><th>Status</th></tr>
+                <tr><td>SC12</td><td>Big Blue</td><td>Kubota Utility RTV</td><td>Facilities Maintenance</td><td><span style="color:red; font-weight:bold;">Under Maintenance</span></td></tr>
+                <tr><td>V104</td><td>Transit 01</td><td>Ford Van</td><td>Transit Services</td><td><span style="color:green; font-weight:bold;">Active</span></td></tr>
+            </table>
+        </div>
+
+        <!-- 3. REPORTS & DATA ANALYSIS -->
+        <div id="reports" class="tab-content">
+            <h2>Reports & Data Analysis</h2>
+            <p>Access automated fleet replacement metrics, TCO tracking, and lifetime cost formulas.</p>
+            <ul>
+                <li>Vehicle Replacement Analysis (Annual Cost per Mile vs Age)</li>
+                <li>Service Cost Histories & Fuel Consumption Trends</li>
+                <li>Total Fleet Operating Cost Breakdown</li>
+            </ul>
+        </div>
+
+        <!-- 4. FLEET OPERATIONS -->
+        <div id="operations" class="tab-content">
+            <h2>Fleet Operations Overview</h2>
+            <p>Real-time telemetry and operational metrics aggregated by shop and vehicle groups.</p>
+            <table>
+                <tr><th>Metric Indicator</th><th>Current Value</th></tr>
+                <tr><td>Active Fleet Utilization Rate</td><td>79.2%</td></tr>
+                <tr><td>Average Fleet Age</td><td>4.5 Years</td></tr>
+                <tr><td>Previous Quarter Total Expenses</td><td>$14,250.00</td></tr>
+            </table>
+        </div>
+
+        <!-- 5. SERVICE & REPAIR REQUEST -->
+        <div id="serviceRepair" class="tab-content">
+            <h2>Service & Repair Request Form</h2>
+            <form onsubmit="alert('Repair request successfully submitted!'); return false;">
+                <div class="form-group">
+                    <label>Select Fleet Vehicle</label>
+                    <select required>
+                        <option value="">-- Choose Asset --</option>
+                        <option value="SC12">SC12 - Kubota Utility RTV (⚠️ Currently Grounded)</option>
+                        <option value="V104">V104 - Ford Transit Van</option>
+                        <option value="T22">T22 - Chevrolet Silverado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Maintenance Priority</label>
+                    <select>
+                        <option>Low</option>
+                        <option selected>Medium</option>
+                        <option>High / Emergency</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Problem Description & Symptoms</label>
+                    <textarea placeholder="Describe sounds, smells, or functional failures..."></textarea>
+                </div>
+                <button type="submit">Dispatch Service Ticket</button>
+            </form>
+        </div>
+
+        <!-- 6. FUEL USAGE ANALYSIS -->
+        <div id="fuelUsage" class="tab-content">
+            <h2>Fuel Usage Analysis</h2>
+            <p>Track aggregated fuel consumption, cost per mile, and alternate energy metrics.</p>
+            <table>
+                <tr><th>Group</th><th>Total Gallons</th><th>Total Fuel Cost</th><th>Avg Cost / Mile</th></tr>
+                <tr><td>Facilities Maintenance</td><td>420.5 gal</td><td>$1,513.80</td><td>$0.34</td></tr>
+                <tr><td>Grounds Department</td><td>185.0 gal (Electric Hours: 90h)</td><td>$210.50</td><td>$0.12</td></tr>
+            </table>
+        </div>
+
+        <!-- 7. REMINDERS -->
+        <div id="reminders" class="tab-content">
+            <h2>Service Reminders & Alerts</h2>
+            <p>Automated notifications tracking oil changes, tire rotations, and scheduled inspections.</p>
+            <ul>
+                <li><strong>SC12:</strong> Hydraulic Fluid Check due at 15,000 miles.</li>
+                <li><strong>V104:</strong> Annual State Inspection due in 14 days.</li>
+            </ul>
+        </div>
+
+        <!-- 8. SYMPTOM & DEFECT CHECKLIST -->
+        <div id="defectChecklist" class="tab-content">
+            <h2>Comprehensive Symptom & Defect Checklist</h2>
+            <div class="warning-box">Select all applicable system abnormalities observed during daily operation.</div>
+            <div class="checklist-grid">
+                <label class="checkbox-label"><input type="checkbox"> Low Engine Oil / Leak</label>
+                <label class="checkbox-label"><input type="checkbox"> Coolant Overheating</label>
+                <label class="checkbox-label"><input type="checkbox"> Spongy / Soft Brakes</label>
+                <label class="checkbox-label"><input type="checkbox"> Steering Whining Noise</label>
+                <label class="checkbox-label"><input type="checkbox"> Transmission Slipping</label>
+                <label class="checkbox-label"><input type="checkbox"> Blown Exterior Bulb</label>
+                <label class="checkbox-label"><input type="checkbox"> Check Engine Light</label>
+                <label class="checkbox-label"><input type="checkbox"> AC Blowing Warm Air</label>
+                <label class="checkbox-label"><input type="checkbox"> TPMS Tire Warning</label>
+                <label class="checkbox-label"><input type="checkbox"> Golf Cart Battery Swollen</label>
+            </div>
+        </div>
+
+        <!-- 9. MAINTENANCE COST ANALYSIS -->
+        <div id="costAnalysis" class="tab-content">
+            <h2>Maintenance Cost Analysis</h2>
+            <p>Aggregated expenses categorized by vehicle make, type, and ownership category.</p>
+            <table>
+                <tr><th>Category</th><th>Service Cost YTD</th><th>Depreciation</th><th>Total TCO</th></tr>
+                <tr><td>State Owned</td><td>$4,200.00</td><td>$2,100.00</td><td>$6,300.00</td></tr>
+                <tr><td>Department Leased</td><td>$1,850.00</td><td>$3,400.00</td><td>$5,250.00</td></tr>
+            </table>
+        </div>
+
+        <!-- 10. FUEL MANAGEMENT & OCR -->
+        <div id="fuelManagement" class="tab-content">
+            <h2>Fuel Receipt Upload & OCR Processing</h2>
+            <div class="form-group">
+                <label>Snap / Upload Fuel Receipt (Azure AI Auto-Fill)</label>
+                <input type="file" accept="image/*">
+            </div>
+            <div class="form-group"><label>Station Name</label><input type="text" placeholder="Auto-filled by AI"></div>
+            <div class="form-group"><label>Price Per Gallon ($)</label><input type="number" step="0.01"></div>
+            <div class="form-group"><label>Total Amount Paid ($)</label><input type="number" step="0.01"></div>
+            <button onclick="alert('Receipt processed successfully and logged!')">Submit Receipt Entry</button>
+        </div>
+
+        <!-- 11. DEFENSIVE DRIVING COURSE -->
+        <div id="ddcCourse" class="tab-content">
+            <h2>Defensive Driving Course (DDC) Hub</h2>
+            <p>Register for DDC 4-Hour (Renewal) or DDC 8-Hour (New Employee) sessions.</p>
+            <div class="form-group">
+                <label>Select Course Type</label>
+                <select>
+                    <option>DDC 4 Hours (Renewal)</option>
+                    <option>DDC 8 Hours (New Employee)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Applicant Full Name</label>
+                <input type="text" placeholder="Must match Driver's License">
+            </div>
+            <button onclick="alert('DDC Application Submitted!')">Register for Class</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function switchTab(event, tabId) {
+        event.preventDefault();
+        
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Remove active class from nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // Show target tab and highlight link
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
+
+```
