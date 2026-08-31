@@ -1,748 +1,402 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FM Phoenix - Fleet Management System</title>
-  <style>
-    :root {
-      --navy: #0a2d4d;
-      --blue: #1a5b8c;
-      --gold: #f5b93a;
-      --orange: #ef7d2d;
-      --red: #b3282f;
-      --slate: #4e6278;
-      --line: #dfe7f0;
-      --panel: #f7f9fc;
-      --white: #ffffff;
-      --bg: linear-gradient(135deg, #edf3fb 0%, #f7f9fc 100%);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: "Segoe UI", Tahoma, sans-serif; background: var(--bg); color: var(--navy);
-    }
-    a, button, input, select, textarea { font: inherit; }
-    .login-shell { min-height: 100vh; display: grid; grid-template-columns: 1.4fr .9fr; }
-    .brand-panel {
-      position: relative; padding: 42px 54px; background: linear-gradient(135deg, rgba(10,45,77,0.98), rgba(17,77,121,0.96));
-      color: white; overflow: hidden;
-    }
-    .brand-panel::after {
-      content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
-    }
-    .brand-inner { position: relative; z-index: 1; max-width: 680px; }
-    .brand-top { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
-    .phoenix-mark {
-      width: 88px; height: 88px; border-radius: 22px; display: grid; place-items: center;
-      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(88,176,255,0.08));
-      border: 1px solid rgba(255,255,255,0.22);
-      box-shadow: inset 0 0 30px rgba(89,186,255,0.12), 0 16px 34px rgba(7, 43, 80, 0.26);
-      background-image: url("assets/image_7699c37.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transform: rotate(-6deg);
-      overflow: hidden;
-    }
-    .brand-title { margin: 0; font-size: 1.2rem; letter-spacing: 0.12em; text-transform: uppercase; }
-    .brand-tagline {
-      margin: 0 0 16px; font-size: clamp(1.5rem, 2.2vw, 2.1rem); font-weight: 800; letter-spacing: 0.03em; color: #f9d879; font-style: italic;
-    }
-    .department-name { font-size: clamp(2rem, 3vw, 3.6rem); line-height: 1.08; margin: 0 0 8px; font-weight: 800; }
-    .brand-sub { max-width: 620px; font-size: 1.08rem; color: rgba(255,255,255,0.88); line-height: 1.6; }
-    .brand-cta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .primary-btn, .ghost-btn, .secondary-btn, .utility-btn {
-      border: none; border-radius: 12px; padding: 12px 18px; cursor: pointer; font-weight: 700;
-      transition: transform 0.2s ease;
-    }
-    .primary-btn { background: linear-gradient(135deg, var(--gold), var(--orange)); color: #14253d; }
-    .ghost-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: white; }
-    .secondary-btn { background: #eef4fb; color: var(--navy); border: 1px solid #d8e2ee; }
-    .utility-btn { background: rgba(26,91,140,0.08); color: var(--navy); border: 1px solid rgba(26,91,140,0.18); }
-    .primary-btn:hover, .ghost-btn:hover, .secondary-btn:hover, .utility-btn:hover { transform: translateY(-1px); }
-    .login-panel { display: flex; align-items: center; justify-content: center; padding: 36px 32px; background: rgba(255,255,255,0.7); }
-    .login-card { width: min(420px, 100%); background: rgba(255,255,255,0.94); border: 1px solid rgba(26,91,140,0.15); border-radius: 26px; padding: 30px; box-shadow: 0 28px 60px rgba(10,45,77,0.12); }
-    .login-card h2 { margin: 0 0 8px; color: var(--navy); font-size: 2rem; }
-    .login-card p { margin: 0 0 18px; color: var(--slate); line-height: 1.5; }
-    .field { margin-bottom: 16px; }
-    .field label { display: block; margin-bottom: 8px; color: var(--navy); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
-    .field input { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 12px; background: #f9fbfe; padding: 13px 14px; font-size: 0.98rem; }
-    .field-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0 18px; font-size: 0.82rem; color: var(--slate); }
-    .check-row { display: flex; align-items: center; gap: 8px; }
-    .linkish { color: var(--blue); font-weight: 700; cursor: pointer; }
-    .demo-access {
-      margin: 18px 0 14px; padding: 12px 14px; border-radius: 14px; background: linear-gradient(135deg, rgba(13,71,118,0.06), rgba(245,185,58,0.08)); border: 1px solid rgba(26,91,140,0.12);
-    }
-    .demo-access h4 { margin: 0 0 8px; color: var(--navy); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; }
-    .demo-user-grid { display: grid; gap: 8px; }
-    .demo-user { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; border-radius: 10px; background: rgba(255,255,255,0.7); border: 1px solid rgba(26,91,140,0.08); font-size: 0.76rem; color: var(--slate); }
-    .demo-user strong { color: var(--navy); }
-    .otp-banner { margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: rgba(93,166,218,0.08); border: 1px solid rgba(26,91,140,0.12); display: none; }
-    .otp-banner.visible { display: block; }
-    .button-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
-    .app-shell { display: none; min-height: 100vh; background: var(--bg); }
-    .app-shell.visible { display: block; }
-    .app-header { background: linear-gradient(135deg, var(--navy) 0%, #103f69 100%); color: white; padding: 20px 32px 18px; }
-    .app-header-row { max-width: 1480px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .brand-mini { display: flex; align-items: center; gap: 14px; }
-    .brand-mini-mark {
-      width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; position: relative; box-shadow: 0 10px 18px rgba(245,185,58,0.2);
-      background-image: url("assets/image_7699c37.png");
-      background-size: cover; background-position: center; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.2);
-    }
-    .brand-mini-title { display: block; font-size: 1rem; font-weight: 800; letter-spacing: 0.03em; }
-    .brand-mini-sub { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.72); letter-spacing: 0.08em; text-transform: uppercase; }
-    .app-header-meta { display: flex; align-items: center; gap: 16px; color: rgba(255,255,255,0.82); font-size: 0.85rem; }
-    .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #31d08b; margin-right: 8px; }
-    .app-content { max-width: 1480px; margin: 0 auto; padding: 26px 28px 100px; }
-    .app-layout { display: flex; gap: 22px; align-items: flex-start; }
-    .sidebar {
-      width: 260px; flex-shrink: 0; background: linear-gradient(180deg, rgba(10,45,77,0.98), rgba(18,68,106,0.97)); border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 18px 30px rgba(10,45,77,0.08); padding: 18px 12px; position: sticky; top: 18px;
-    }
-    .sidebar-header { color: rgba(255,255,255,0.72); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 12px 12px; font-weight: 800; }
-    .sidebar-tab {
-      width: 100%; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.86); padding: 12px 14px; border-radius: 12px; margin-bottom: 8px; text-align: left; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
-    }
-    .sidebar-tab.active, .sidebar-tab:hover { background: linear-gradient(135deg, rgba(245,185,58,0.18), rgba(31,113,181,0.36)); border-color: rgba(245,185,58,0.35); color: white; }
-    .main-panel { flex: 1; min-width: 0; }
-    .department-banner { background: linear-gradient(135deg, rgba(26,91,140,0.1), rgba(245,185,58,0.08)); border: 1px solid rgba(26,91,140,0.16); border-radius: 22px; padding: 22px 24px; display: flex; justify-content: space-between; gap: 18px; align-items: center; margin-bottom: 22px; }
-    .department-banner strong { display: block; margin-bottom: 6px; font-size: 1.18rem; }
-    .department-banner span { color: var(--slate); font-size: 0.9rem; }
-    .page-tag { background: rgba(245,185,58,0.14); border: 1px solid rgba(245,185,58,0.28); color: #7a4d05; border-radius: 999px; padding: 8px 12px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
-    .fleet-hero {
-      position: relative; overflow: hidden; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 20px;
-      background: linear-gradient(135deg, rgba(11,40,67,0.98), rgba(20,82,121,0.96)); border: 1px solid rgba(114,169,232,0.2);
-      border-radius: 28px; padding: 26px 28px; min-height: 310px; margin-bottom: 20px; box-shadow: 0 20px 38px rgba(11,40,67,0.12);
-    }
-    .fleet-hero::after {
-      content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 18%, rgba(85,196,255,0.22), transparent 35%), linear-gradient(90deg, rgba(255,255,255,0.04), transparent 40%);
-      pointer-events: none;
-    }
-    .hero-copy { position: relative; z-index: 1; }
-    .hero-pill {
-      display: inline-block; background: rgba(120,211,255,0.12); border: 1px solid rgba(166,219,255,0.34); color: #dff7ff; border-radius: 999px; padding: 8px 12px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
-    }
-    .hero-copy h3 {
-      margin: 16px 0 12px; color: #ffffff; font-size: clamp(2rem, 2.8vw, 3rem); line-height: 1.05; letter-spacing: -0.04em;
-    }
-    .hero-copy p { margin: 0; max-width: 540px; color: rgba(228,240,255,0.86); line-height: 1.6; }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-    .hero-visual { position: relative; height: 260px; z-index: 1; }
-    .hero-road {
-      position: absolute; inset: 0; border-radius: 22px; background-image: linear-gradient(180deg, rgba(4,23,38,0.18), rgba(4,23,38,0.58)), url("assets/gemini-2.5-flash-image_professional_photo_of_a_white_color_car_is_driving_on_a_highway_this_big_blue_bi-0.jpg");
-      background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 0 30px rgba(0,0,0,0.12);
-      animation: roadPan 16s ease-in-out infinite alternate;
-    }
-    .blue-phoenix {
-      position: absolute; right: 14px; top: 18px; width: 420px; height: 240px; background-image: url("assets/image_7699c37.png");
-      background-size: contain; background-repeat: no-repeat; background-position: center; filter: drop-shadow(0 12px 24px rgba(31,140,255,0.28));
-      animation: phoenixFloat 6s ease-in-out infinite;
-      transform-origin: center;
-    }
-    .status-visual-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 22px; }
-    .visual-card {
-      position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,244,252,0.96)); border: 1px solid var(--line); border-radius: 20px; padding: 16px; box-shadow: 0 14px 28px rgba(17,30,53,0.04);
-    }
-    .mini-visual {
-      height: 130px; border-radius: 14px; margin-bottom: 12px; background-size: cover; background-position: center; border: 1px solid rgba(17,30,53,0.08);
-    }
-    .mini-visual.vehicle-service { background-image: linear-gradient(180deg, rgba(10,45,77,0.12), rgba(10,45,77,0.42)), url("file:///C:/Users/Deep%20Panchal/AppData/Roaming/Code/agentSessionData/e255d625-4fa3-404d-8aa5-125b3ac62291/attachments/6eb24fc5-07eb-457b-aa2b-8cfc47cbf2e8/image_705e2a0e.png"); }
-    .mini-visual.vehicle-reserved { background-image: linear-gradient(180deg, rgba(10,45,77,0.18), rgba(10,45,77,0.5)), url("file:///C:/Users/Deep%20Panchal/AppData/Roaming/Code/agentSessionData/e255d625-4fa3-404d-8aa5-125b3ac62291/attachments/25194674-1b18-4bd2-8bb2-b79afe54790c/image_5675a11b.png"); }
-    .mini-visual.vehicle-running { background-image: linear-gradient(180deg, rgba(10,45,77,0.14), rgba(10,45,77,0.48)), url("file:///C:/Users/Deep%20Panchal/AppData/Roaming/Code/agentSessionData/e255d625-4fa3-404d-8aa5-125b3ac62291/attachments/74b7947c-d37c-4ca7-970b-0ebc986b0cc2/gemini-2.5-flash-image_professional_photo_of_a_white_color_car_is_driving_on_a_highway_this_big_blue_bi-0.jpg"); }
-    .mini-visual.vehicle-idle { background-image: linear-gradient(180deg, rgba(10,45,77,0.08), rgba(10,45,77,0.36)), url("file:///C:/Users/Deep%20Panchal/AppData/Roaming/Code/agentSessionData/e255d625-4fa3-404d-8aa5-125b3ac62291/attachments/6eb24fc5-07eb-457b-aa2b-8cfc47cbf2e8/image_705e2a0e.png"); }
-    .visual-card h4 { margin: 0 0 6px; font-size: 1rem; }
-    .visual-card p { margin: 0; color: var(--slate); font-size: 0.82rem; }
-    .dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 22px; }
-    .stat-panel { background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(248,250,253,0.96)); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: 0 14px 28px rgba(17,30,53,0.04); }
-    .stat-label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); font-weight: 800; }
-    .stat-value { font-size: clamp(1.7rem,2vw,2.5rem); font-weight: 900; margin: 10px 0 6px; }
-    .stat-trend { font-size: 0.8rem; color: #1d7f53; font-weight: 700; }
-    .content-stack { display: grid; grid-template-columns: 1.3fr .7fr; gap: 22px; margin-bottom: 20px; }
-    @keyframes phoenixFloat { 0%, 100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg) scale(1.02); } }
-    @keyframes roadPan { 0% { transform: scale(1) translateX(0px); } 100% { transform: scale(1.08) translateX(6px); } }
-    .card { background: rgba(255,255,255,0.96); border: 1px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: 0 14px 28px rgba(17,30,53,0.04); }
-    .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
-    .card-head h3 { margin: 0; color: var(--navy); font-size: 1.2rem; }
-    .tiny-badge { border-radius: 999px; padding: 7px 10px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
-    .badge-success { background: rgba(49,208,139,0.12); color: #156b4a; }
-    .badge-warning { background: rgba(245,185,58,0.12); color: #7a4d05; }
-    .feature-list { display: grid; gap: 14px; }
-    .feature-row { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; }
-    .feature-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(26,91,140,0.12), rgba(245,185,58,0.18)); color: var(--blue); font-weight: 900; }
-    .feature-copy strong { display: block; color: var(--navy); margin-bottom: 4px; }
-    .feature-copy span { color: var(--slate); font-size: 0.86rem; }
-    .dept-info-box { display: grid; gap: 14px; }
-    .dept-info-box p { margin: 0; line-height: 1.7; color: var(--slate); }
-    .contact-list { display: grid; gap: 8px; }
-    .contact-line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--navy); font-weight: 700; }
-    .muted { color: var(--slate); }
-    .tab-content { display: none; margin-top: 18px; }
-    .tab-content.active { display: block; }
-    .data-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-    .data-table th, .data-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; }
-    .data-table th { background: #f3f6fa; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .form-field { display: flex; flex-direction: column; gap: 8px; }
-    .form-field label { font-size: 0.8rem; font-weight: 800; color: var(--navy); letter-spacing: 0.04em; text-transform: uppercase; }
-    .form-field input, .form-field select, .form-field textarea { border: 1px solid var(--line); border-radius: 12px; background: #f9fbfe; padding: 12px 14px; color: var(--navy); }
-    .form-field textarea { min-height: 110px; resize: vertical; }
-    .workflow-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
-    .workflow-step { background: linear-gradient(180deg, rgba(13,71,118,0.08), rgba(245,185,58,0.06)); border: 1px solid rgba(26,91,140,0.14); border-radius: 15px; padding: 14px 12px; min-height: 112px; }
-    .workflow-step strong { display: block; margin-bottom: 8px; color: var(--navy); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
-    .workflow-step span { color: var(--slate); font-size: 0.82rem; line-height: 1.5; }
-    .signature-box { border: 1px solid var(--line); border-radius: 12px; background: #f9fbfe; min-height: 120px; display: flex; align-items: center; justify-content: center; color: var(--slate); padding: 12px; }
-    .record-list { margin-top: 18px; display: grid; gap: 12px; }
-    .record-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: #f8fafc; color: var(--navy); }
-    .record-item small { color: var(--slate); display: block; }
-    .bottom-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(1240px, calc(100% - 30px)); background: rgba(10,45,77,0.96); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 8px 10px; box-shadow: 0 28px 48px rgba(10,45,77,0.26); z-index: 30; }
-    .bottom-nav-inner { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
-    .nav-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); border-radius: 12px; text-align: center; padding: 11px 8px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; text-decoration: none; }
-    .nav-pill.active, .nav-pill:hover { background: linear-gradient(135deg, rgba(245,185,58,0.22), rgba(239,125,45,0.14)); border-color: rgba(245,185,58,0.42); color: white; }
-    @media (max-width: 980px) { .login-shell { grid-template-columns: 1fr; } .brand-panel { padding-bottom: 30px; } .app-layout { flex-direction: column; } .sidebar { width: 100%; position: static; } .dashboard-grid, .content-stack, .form-grid { grid-template-columns: 1fr; } .bottom-nav-inner { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSC Fleet Management System</title>
+    <style>
+        :root {
+            --primary: #1F4E78;
+            --secondary: #2E75B6;
+            --bg-color: #F4F6F9;
+            --card-bg: #FFFFFF;
+            --text-main: #333333;
+            --border-color: #D9D9D9;
+            --danger: #C00000;
+            --success: #375623;
+            --warning: #ED7D31;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        nav {
+            width: 260px;
+            background: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+        }
+        nav a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        nav a:hover, nav a.active {
+            background-color: #F2F5F8;
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .tab-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            height: 90px;
+        }
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            background: #FAFAFA;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .checkbox-label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: var(--secondary);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        .warning-box {
+            background: #FFF3CD;
+            border: 1px solid #FFEEBA;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: #F8F9FA;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .stat-card p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <div class="login-shell" id="loginShell">
-    <div class="brand-panel">
-      <div class="brand-inner">
-        <div class="brand-top">
-          <div class="phoenix-mark" aria-hidden="true"></div>
-          <div>
-            <h1 class="brand-title">FM Phoenix</h1>
-          </div>
+
+<header>
+    <h1>MUSC Fleet Management System</h1>
+    <span id="userSession">User: Admin / Technician</span>
+</header>
+
+<div class="main-layout">
+    <nav>
+        <a href="#" class="nav-link active" onclick="switchTab(event, 'dashboard')">1. Dashboard</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'assetManagement')">2. Vehicle / Asset Management</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'reports')">3. Reports & Data Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'operations')">4. Fleet Operations</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'serviceRepair')">5. Service & Repair Request</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'fuelUsage')">6. Fuel Usage Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'reminders')">7. Reminders</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'defectChecklist')">8. Symptom & Defect Checklist</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'costAnalysis')">9. Maintenance Cost Analysis</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'fuelManagement')">10. Fuel Management & OCR</a>
+        <a href="#" class="nav-link" onclick="switchTab(event, 'ddcCourse')">11. Defensive Driving Course</a>
+    </nav>
+
+    <div style="flex: 1; padding: 30px; overflow-y: auto;">
+
+        <!-- 1. DASHBOARD -->
+        <div id="dashboard" class="tab-content active">
+            <h2>Dashboard Active Status Grid</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Active On-Road</h3><p>42</p></div>
+                <div class="stat-card"><h3>Booked / Reserved</h3><p>8</p></div>
+                <div class="stat-card"><h3>Under Maintenance</h3><p>3</p></div>
+                <div class="stat-card"><h3>Total Fleet Size</h3><p>53</p></div>
+            </div>
+            <p>Welcome to the MUSC Facilities Management Fleet Portal. Use the left navigation tabs to handle reservations, maintenance requests, or review analytics.</p>
         </div>
-        <p class="brand-tagline">Leaving the Old Trail. Igniting the New Drive</p>
-        <div>
-          <h2 class="department-name">Department of Facilities Management</h2>
-          <p class="brand-sub">Engineering &amp; Facilities Department</p>
+
+        <!-- 2. VEHICLE / ASSET MANAGEMENT -->
+        <div id="assetManagement" class="tab-content">
+            <h2>Vehicle / Asset Management</h2>
+            <div class="form-group">
+                <label>Filter Asset View</label>
+                <select>
+                    <option>All Vehicles</option>
+                    <option>Assigned - Active</option>
+                    <option>Unassigned - Inactive</option>
+                    <option>Archived / Disposed</option>
+                </select>
+            </div>
+            <table>
+                <tr><th>Vehicle ID</th><th>Nickname</th><th>Asset Type</th><th>Department</th><th>Status</th></tr>
+                <tr><td>SC12</td><td>Big Blue</td><td>Kubota Utility RTV</td><td>Facilities Maintenance</td><td><span style="color:red; font-weight:bold;">Under Maintenance</span></td></tr>
+                <tr><td>V104</td><td>Transit 01</td><td>Ford Van</td><td>Transit Services</td><td><span style="color:green; font-weight:bold;">Active</span></td></tr>
+            </table>
         </div>
-        <div style="margin-top: 30px; max-width: 680px;">
-          <p class="brand-sub">The Engineering and Facilities Unit is here 24 hours a day, seven days a week providing support services for the Medical University of South Carolina. We manage a wide range of maintenance and improvement activities for existing University and Clinical facilities, oversee all aspects of renovation and new construction, and provide leadership in sustainability which includes recycling and waste stream reduction, utilities management, and planned renewal.</p>
+
+        <!-- 3. REPORTS & DATA ANALYSIS -->
+        <div id="reports" class="tab-content">
+            <h2>Reports & Data Analysis</h2>
+            <p>Access automated fleet replacement metrics, TCO tracking, and lifetime cost formulas.</p>
+            <ul>
+                <li>Vehicle Replacement Analysis (Annual Cost per Mile vs Age)</li>
+                <li>Service Cost Histories & Fuel Consumption Trends</li>
+                <li>Total Fleet Operating Cost Breakdown</li>
+            </ul>
         </div>
-        <div class="brand-cta">
-          <button class="primary-btn" type="button" onclick="document.getElementById('email').focus()">Access Portal</button>
-          <button class="ghost-btn" type="button" onclick="generateOtp()">Request OTP</button>
+
+        <!-- 4. FLEET OPERATIONS -->
+        <div id="operations" class="tab-content">
+            <h2>Fleet Operations Overview</h2>
+            <p>Real-time telemetry and operational metrics aggregated by shop and vehicle groups.</p>
+            <table>
+                <tr><th>Metric Indicator</th><th>Current Value</th></tr>
+                <tr><td>Active Fleet Utilization Rate</td><td>79.2%</td></tr>
+                <tr><td>Average Fleet Age</td><td>4.5 Years</td></tr>
+                <tr><td>Previous Quarter Total Expenses</td><td>$14,250.00</td></tr>
+            </table>
         </div>
-      </div>
+
+        <!-- 5. SERVICE & REPAIR REQUEST -->
+        <div id="serviceRepair" class="tab-content">
+            <h2>Service & Repair Request Form</h2>
+            <form onsubmit="alert('Repair request successfully submitted!'); return false;">
+                <div class="form-group">
+                    <label>Select Fleet Vehicle</label>
+                    <select required>
+                        <option value="">-- Choose Asset --</option>
+                        <option value="SC12">SC12 - Kubota Utility RTV (⚠️ Currently Grounded)</option>
+                        <option value="V104">V104 - Ford Transit Van</option>
+                        <option value="T22">T22 - Chevrolet Silverado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Maintenance Priority</label>
+                    <select>
+                        <option>Low</option>
+                        <option selected>Medium</option>
+                        <option>High / Emergency</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Problem Description & Symptoms</label>
+                    <textarea placeholder="Describe sounds, smells, or functional failures..."></textarea>
+                </div>
+                <button type="submit">Dispatch Service Ticket</button>
+            </form>
+        </div>
+
+        <!-- 6. FUEL USAGE ANALYSIS -->
+        <div id="fuelUsage" class="tab-content">
+            <h2>Fuel Usage Analysis</h2>
+            <p>Track aggregated fuel consumption, cost per mile, and alternate energy metrics.</p>
+            <table>
+                <tr><th>Group</th><th>Total Gallons</th><th>Total Fuel Cost</th><th>Avg Cost / Mile</th></tr>
+                <tr><td>Facilities Maintenance</td><td>420.5 gal</td><td>$1,513.80</td><td>$0.34</td></tr>
+                <tr><td>Grounds Department</td><td>185.0 gal (Electric Hours: 90h)</td><td>$210.50</td><td>$0.12</td></tr>
+            </table>
+        </div>
+
+        <!-- 7. REMINDERS -->
+        <div id="reminders" class="tab-content">
+            <h2>Service Reminders & Alerts</h2>
+            <p>Automated notifications tracking oil changes, tire rotations, and scheduled inspections.</p>
+            <ul>
+                <li><strong>SC12:</strong> Hydraulic Fluid Check due at 15,000 miles.</li>
+                <li><strong>V104:</strong> Annual State Inspection due in 14 days.</li>
+            </ul>
+        </div>
+
+        <!-- 8. SYMPTOM & DEFECT CHECKLIST -->
+        <div id="defectChecklist" class="tab-content">
+            <h2>Comprehensive Symptom & Defect Checklist</h2>
+            <div class="warning-box">Select all applicable system abnormalities observed during daily operation.</div>
+            <div class="checklist-grid">
+                <label class="checkbox-label"><input type="checkbox"> Low Engine Oil / Leak</label>
+                <label class="checkbox-label"><input type="checkbox"> Coolant Overheating</label>
+                <label class="checkbox-label"><input type="checkbox"> Spongy / Soft Brakes</label>
+                <label class="checkbox-label"><input type="checkbox"> Steering Whining Noise</label>
+                <label class="checkbox-label"><input type="checkbox"> Transmission Slipping</label>
+                <label class="checkbox-label"><input type="checkbox"> Blown Exterior Bulb</label>
+                <label class="checkbox-label"><input type="checkbox"> Check Engine Light</label>
+                <label class="checkbox-label"><input type="checkbox"> AC Blowing Warm Air</label>
+                <label class="checkbox-label"><input type="checkbox"> TPMS Tire Warning</label>
+                <label class="checkbox-label"><input type="checkbox"> Golf Cart Battery Swollen</label>
+            </div>
+        </div>
+
+        <!-- 9. MAINTENANCE COST ANALYSIS -->
+        <div id="costAnalysis" class="tab-content">
+            <h2>Maintenance Cost Analysis</h2>
+            <p>Aggregated expenses categorized by vehicle make, type, and ownership category.</p>
+            <table>
+                <tr><th>Category</th><th>Service Cost YTD</th><th>Depreciation</th><th>Total TCO</th></tr>
+                <tr><td>State Owned</td><td>$4,200.00</td><td>$2,100.00</td><td>$6,300.00</td></tr>
+                <tr><td>Department Leased</td><td>$1,850.00</td><td>$3,400.00</td><td>$5,250.00</td></tr>
+            </table>
+        </div>
+
+        <!-- 10. FUEL MANAGEMENT & OCR -->
+        <div id="fuelManagement" class="tab-content">
+            <h2>Fuel Receipt Upload & OCR Processing</h2>
+            <div class="form-group">
+                <label>Snap / Upload Fuel Receipt (Azure AI Auto-Fill)</label>
+                <input type="file" accept="image/*">
+            </div>
+            <div class="form-group"><label>Station Name</label><input type="text" placeholder="Auto-filled by AI"></div>
+            <div class="form-group"><label>Price Per Gallon ($)</label><input type="number" step="0.01"></div>
+            <div class="form-group"><label>Total Amount Paid ($)</label><input type="number" step="0.01"></div>
+            <button onclick="alert('Receipt processed successfully and logged!')">Submit Receipt Entry</button>
+        </div>
+
+        <!-- 11. DEFENSIVE DRIVING COURSE -->
+        <div id="ddcCourse" class="tab-content">
+            <h2>Defensive Driving Course (DDC) Hub</h2>
+            <p>Register for DDC 4-Hour (Renewal) or DDC 8-Hour (New Employee) sessions.</p>
+            <div class="form-group">
+                <label>Select Course Type</label>
+                <select>
+                    <option>DDC 4 Hours (Renewal)</option>
+                    <option>DDC 8 Hours (New Employee)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Applicant Full Name</label>
+                <input type="text" placeholder="Must match Driver's License">
+            </div>
+            <button onclick="alert('DDC Application Submitted!')">Register for Class</button>
+        </div>
+
     </div>
+</div>
 
-    <div class="login-panel">
-      <div class="login-card">
-        <h2>Sign In</h2>
-        <p>Welcome back to the fleet operations portal. Use your MUSC email and secure PIN to continue.</p>
-        <div class="demo-access">
-          <h4>Demo Access</h4>
-          <div class="demo-user-grid">
-            <div class="demo-user"><strong>Fleet Administrator</strong><span>admin@musc.edu / 1234</span></div>
-            <div class="demo-user"><strong>Operations Manager</strong><span>manager@musc.edu / 5678</span></div>
-            <div class="demo-user"><strong>Supervisor</strong><span>supervisor@musc.edu / 2468</span></div>
-            <div class="demo-user"><strong>Technician</strong><span>technician@musc.edu / 1357</span></div>
-          </div>
-        </div>
-        <div class="field">
-          <label for="email">Email Address</label>
-          <input id="email" type="email" placeholder="name@musc.edu" />
-        </div>
-        <div class="field">
-          <label for="password">Password / PIN</label>
-          <input id="password" type="password" placeholder="Enter 4-digit PIN" maxlength="4" />
-        </div>
-        <div class="field-row">
-          <label class="check-row"><input type="checkbox" checked /> Remember me</label>
-          <span class="linkish" onclick="forgotPassword()">Forgot Password?</span>
-        </div>
-        <button class="primary-btn" style="width:100%;" type="button" id="loginButton">Login</button>
-        <div class="otp-banner" id="otpMessage"></div>
-        <div class="field" style="margin-top:16px;">
-          <label for="otpCode">OTP (Outlook verification)</label>
-          <input id="otpCode" type="text" placeholder="Enter OTP received via Outlook" maxlength="6" />
-        </div>
-        <div class="button-row" style="margin-top:0;">
-          <button class="utility-btn" type="button" onclick="generateOtp()">Send OTP</button>
-          <button class="secondary-btn" type="button" onclick="verifyOtp()">Verify OTP</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="app-shell" id="appShell">
-    <header class="app-header">
-      <div class="app-header-row">
-        <div class="brand-mini">
-          <div class="brand-mini-mark" aria-hidden="true"></div>
-          <div>
-            <span class="brand-mini-title">FM Phoenix</span>
-            <span class="brand-mini-sub">Fleet Management System</span>
-          </div>
-        </div>
-        <div class="app-header-meta">
-          <span><span class="status-dot"></span>System online</span>
-          <span id="userRole">Admin / Technician</span>
-        </div>
-      </div>
-    </header>
-
-    <div class="app-content">
-      <div class="department-banner">
-        <div>
-          <strong>Department of Facilities Management</strong>
-          <span>E &amp; F - Engineering and Facilities Department</span>
-        </div>
-        <div class="page-tag">Operations Dashboard</div>
-      </div>
-
-      <div class="app-layout">
-        <aside class="sidebar">
-          <div class="sidebar-header">Navigation</div>
-          <button class="sidebar-tab active" type="button" data-target="dashboardTab">1. Dashboard</button>
-          <button class="sidebar-tab" type="button" data-target="assetManagementTab">2. Vehicle / Asset Management</button>
-          <button class="sidebar-tab" type="button" data-target="fleetMapTab">3. Fleet Map</button>
-          <button class="sidebar-tab" type="button" data-target="fuelManagementTab">4. Fuel Management</button>
-          <button class="sidebar-tab" type="button" data-target="reservationTab">5. Asset / Vehicle Reservation</button>
-          <button class="sidebar-tab" type="button" data-target="serviceRepairTab">6. Service / Maintenance</button>
-          <button class="sidebar-tab" type="button" data-target="mileageLogsManagementTab">7. Mileage Logs Management</button>
-          <button class="sidebar-tab" type="button" data-target="fleetOperationsTab">8. Fleet Operations</button>
-          <button class="sidebar-tab" type="button" data-target="defensiveDrivingTab">9. Defensive Driving Course</button>
-          <button class="sidebar-tab" type="button" data-target="vendorManagementTab">10. Vendor Management</button>
-          <button class="sidebar-tab" type="button" data-target="reportsTab">11. Reports &amp; Data Analysis</button>
-          <button class="sidebar-tab" type="button" data-target="fuelUsageAnalysisTab">12. Fuel Usage Analysis</button>
-          <button class="sidebar-tab" type="button" data-target="remindersTab">13. Reminders</button>
-          <button class="sidebar-tab" type="button" data-target="maintenanceCostAnalysisTab">14. Maintenance Cost Analysis</button>
-          <button class="sidebar-tab" type="button" data-target="adminTab">15. Admin Corner (Needs access approval)</button>
-        </aside>
-
-        <main class="main-panel">
-          <div class="tab-content active" id="dashboardTab">
-            <div class="dashboard-grid">
-              <div class="stat-panel"><span class="stat-label">Active on-road</span><div class="stat-value">42</div><div class="stat-trend">+4.2% vs last week</div></div>
-              <div class="stat-panel"><span class="stat-label">Booked / reserved</span><div class="stat-value">08</div><div class="stat-trend">Priority assignments</div></div>
-              <div class="stat-panel"><span class="stat-label">Currently in use</span><div class="stat-value">17</div><div class="stat-trend">Average utilization 74%</div></div>
-              <div class="stat-panel"><span class="stat-label">Inactive / maintenance</span><div class="stat-value">03</div><div class="stat-trend">1 release pending</div></div>
-            </div>
-
-            <div class="content-stack">
-              <div class="card">
-                <div class="card-head"><h3>Department Snapshot</h3><span class="tiny-badge badge-success">Operational</span></div>
-                <div class="feature-list">
-                  <div class="feature-row"><div class="feature-icon">01</div><div class="feature-copy"><strong>Vehicle &amp; Asset Management</strong><span>Fleet inventory, assignment status, and utilization readiness.</span></div></div>
-                  <div class="feature-row"><div class="feature-icon">02</div><div class="feature-copy"><strong>Mileage Log Management</strong><span>Trip capture, odometer tracking, and drive usage review.</span></div></div>
-                  <div class="feature-row"><div class="feature-icon">03</div><div class="feature-copy"><strong>Fuel Management</strong><span>Receipts, gallons consumed, and cost analysis.</span></div></div>
-                  <div class="feature-row"><div class="feature-icon">04</div><div class="feature-copy"><strong>Service &amp; Repair Requests</strong><span>Dispatch, defect review, and maintenance follow-up.</span></div></div>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-head"><h3>Department Overview</h3><span class="tiny-badge badge-warning">Support</span></div>
-                <div class="dept-info-box">
-                  <p>The Engineering and Facilities Unit is here 24 hours a day, seven days a week providing support services for the Medical University of South Carolina. We manage a wide range of maintenance and improvement activities for existing University and Clinical facilities, oversee all aspects of renovation and new construction, and provide leadership in sustainability.</p>
-                  <div class="contact-list">
-                    <div class="contact-line">Emergency: <span class="muted">843-792-4119 | 843-792-5600</span></div>
-                    <div class="contact-line">Address: <span class="muted">97 Jonathan Lucas St, Charleston, SC 29425</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-head"><h3>Operational Summary</h3><span class="tiny-badge badge-success">Live</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Mission status</label><input type="text" value="Fleet operations on schedule" /></div>
-                <div class="form-field"><label>Service level</label><input type="text" value="96.4% available" /></div>
-                <div class="form-field"><label>Top issue</label><input type="text" value="Hydraulic maintenance review" /></div>
-                <div class="form-field"><label>Next inspection</label><input type="text" value="2 days" /></div>
-              </div>
-              <div class="button-row">
-                <button class="primary-btn" type="button">Review &amp; Save</button>
-                <button class="utility-btn" type="button">Back</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="assetManagementTab">
-            <div class="card">
-              <div class="card-head"><h3>Vehicle / Asset Management</h3><span class="tiny-badge badge-warning">Asset review</span></div>
-              <table class="data-table">
-                <thead><tr><th>Vehicle ID</th><th>Asset Type</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
-                <tbody>
-                  <tr><td>V-104</td><td>Ford Transit Van</td><td>Transit Services</td><td>Active</td><td><button class="utility-btn" type="button">Review</button></td></tr>
-                  <tr><td>SC12</td><td>Kubota Utility RTV</td><td>Facilities Maintenance</td><td>Maintenance</td><td><button class="utility-btn" type="button">Review</button></td></tr>
-                </tbody>
-              </table>
-              <div class="button-row"><button class="primary-btn" type="button">Submit</button><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="fleetMapTab">
-            <div class="card">
-              <div class="card-head"><h3>Fleet Map</h3><span class="tiny-badge badge-success">Live state</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Route status</label><input type="text" value="All units online" /></div>
-                <div class="form-field"><label>Current coverage</label><input type="text" value="Charleston metro" /></div>
-              </div>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="mileageLogsManagementTab">
-            <div class="card">
-              <div class="card-head"><h3>Mileage Log Management</h3><span class="tiny-badge badge-success">Phone-ready</span></div>
-
-              <div class="workflow-grid">
-                <div class="workflow-step"><strong>Phase 1</strong><span>Driver fills trip form on phone or desktop.</span></div>
-                <div class="workflow-step"><strong>Phase 2</strong><span>Trip row is saved to the local database record store.</span></div>
-                <div class="workflow-step"><strong>Phase 3</strong><span>Cutoff check runs on the 25th / 26th accounting cycle.</span></div>
-                <div class="workflow-step"><strong>Phase 4</strong><span>Automation maps trip data into the monthly PDF sheet.</span></div>
-                <div class="workflow-step"><strong>Phase 5</strong><span>Master summary is exported to department-level PDF archive.</span></div>
-              </div>
-
-              <form id="mileageForm">
-                <div class="form-grid">
-                  <div class="form-field"><label>Date</label><input id="tripDate" type="date" value="2026-08-31" /></div>
-                  <div class="form-field"><label>Driver / Operator</label><input id="driverName" type="text" value="J. Smith" /></div>
-                  <div class="form-field"><label>Vehicle Unit</label><select id="vehicleUnit"><option>SC-1042</option><option>SC-2077</option><option>SC-3311</option></select></div>
-                  <div class="form-field"><label>Job Function</label><input id="jobFunction" type="text" value="Facilities Support" /></div>
-                  <div class="form-field"><label>Starting Odometer</label><input id="startOdometer" type="number" value="12340" /></div>
-                  <div class="form-field"><label>Ending Odometer</label><input id="endOdometer" type="number" value="12405" /></div>
-                  <div class="form-field"><label>From</label><input id="tripFrom" type="text" value="Fleet Garage" /></div>
-                  <div class="form-field"><label>To</label><input id="tripTo" type="text" value="MUSC Main Campus" /></div>
-                  <div class="form-field"><label>Local Travel</label><select id="localTravel"><option value="No">No</option><option value="Yes">Yes</option></select></div>
-                  <div class="form-field"><label>Passengers</label><input id="passengers" type="number" value="1" /></div>
-                  <div class="form-field"><label>Fuel Level</label><input id="fuelLevel" type="text" value="75%" /></div>
-                  <div class="form-field"><label>Trip Status</label><select id="tripStatus"><option value="In Progress">In Progress</option><option value="Completed" selected>Completed</option></select></div>
-                  <div class="form-field" style="grid-column: 1 / -1;"><label>Purpose of Trip</label><textarea id="purposeOfTrip">Routine facilities support and inspection check.</textarea></div>
-                  <div class="form-field" style="grid-column: 1 / -1;">
-                    <label>Driver Signature</label>
-                    <input id="signatureImage" type="file" accept="image/*" capture="environment" />
-                    <div class="signature-box" id="signaturePreview">Awaiting signature image upload</div>
-                  </div>
-                </div>
-
-                <div class="button-row">
-                  <button class="primary-btn" type="button" id="saveMileageBtn">Save Trip to Database</button>
-                  <button class="secondary-btn" type="button" id="draftMileageBtn">Save Draft</button>
-                  <button class="utility-btn" type="button" id="reviewMileageBtn">Review &amp; Submit</button>
-                  <button class="utility-btn" type="button" id="backMileageBtn">Back</button>
-                </div>
-              </form>
-
-              <div class="record-list" id="tripRecordList"></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="fuelManagementTab">
-            <div class="card">
-              <div class="card-head"><h3>Fuel Management</h3><span class="tiny-badge badge-success">Audit-ready</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Fuel receipt ID</label><input type="text" value="FUEL-2411" /></div>
-                <div class="form-field"><label>Station</label><input type="text" value="MUSC Fuel Point" /></div>
-                <div class="form-field"><label>Gallons</label><input type="text" value="21.8" /></div>
-                <div class="form-field"><label>Total amount</label><input type="text" value="$83.42" /></div>
-              </div>
-              <div class="button-row"><button class="primary-btn" type="button">Review &amp; Submit</button><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="reservationTab">
-            <div class="card">
-              <div class="card-head"><h3>Asset / Vehicle Reservation</h3><span class="tiny-badge badge-warning">Booked assets</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Vehicle</label><select><option>SC-1042</option><option>SC-2077</option><option>SC-3311</option></select></div>
-                <div class="form-field"><label>Reserved by</label><input type="text" value="Engineering Team" /></div>
-                <div class="form-field"><label>From date</label><input type="date" /></div>
-                <div class="form-field"><label>To date</label><input type="date" /></div>
-              </div>
-              <div class="button-row"><button class="primary-btn" type="button">Save Reservation</button><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="serviceRepairTab">
-            <div class="card">
-              <div class="card-head"><h3>Service / Maintenance</h3><span class="tiny-badge badge-warning">Open tickets</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Vehicle</label><select><option>SC-1042</option><option>SC-2077</option><option>SC-3311</option></select></div>
-                <div class="form-field"><label>Priority</label><select><option>Medium</option><option>High / Emergency</option></select></div>
-                <div class="form-field" style="grid-column: 1 / -1;"><label>Problem description</label><textarea>Hydraulic fluid leak observed during daily inspection.</textarea></div>
-              </div>
-              <div class="button-row"><button class="primary-btn" type="button">Submit</button><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="fleetOperationsTab">
-            <div class="card">
-              <div class="card-head"><h3>Fleet Operations</h3><span class="tiny-badge badge-success">Live schedule</span></div>
-              <table class="data-table">
-                <thead><tr><th>Shift</th><th>Unit</th><th>Assignment</th><th>Status</th></tr></thead>
-                <tbody><tr><td>AM</td><td>SC-1042</td><td>Facilities Support</td><td>Ready</td></tr><tr><td>PM</td><td>SC-2077</td><td>Utilities Response</td><td>In route</td></tr></tbody>
-              </table>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="defensiveDrivingTab">
-            <div class="card">
-              <div class="card-head"><h3>Defensive Driving Course</h3><span class="tiny-badge badge-warning">Training</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Driver</label><input type="text" value="J. Smith" /></div>
-                <div class="form-field"><label>Completion status</label><input type="text" value="Current" /></div>
-                <div class="form-field"><label>Next session</label><input type="date" /></div>
-              </div>
-              <div class="button-row"><button class="primary-btn" type="button">Review &amp; Save</button><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="vendorManagementTab">
-            <div class="card">
-              <div class="card-head"><h3>Vendor Management</h3><span class="tiny-badge badge-success">Approved</span></div>
-              <table class="data-table">
-                <thead><tr><th>Vendor</th><th>Service</th><th>Status</th><th>Contact</th></tr></thead>
-                <tbody><tr><td>Hay Tire</td><td>Fleet tires</td><td>Active</td><td>843-555-0101</td></tr></tbody>
-              </table>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="reportsTab">
-            <div class="card">
-              <div class="card-head"><h3>Reports &amp; Data Analysis</h3><span class="tiny-badge badge-success">Compiled</span></div>
-              <table class="data-table">
-                <thead><tr><th>Report</th><th>Period</th><th>Status</th><th>Action</th></tr></thead>
-                <tbody>
-                  <tr><td>Monthly mileage summary</td><td>August 2026</td><td>Ready</td><td><button class="utility-btn" type="button">Open</button></td></tr>
-                  <tr><td>Vehicle utilization chart</td><td>August 2026</td><td>Ready</td><td><button class="utility-btn" type="button">Open</button></td></tr>
-                </tbody>
-              </table>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="fuelUsageAnalysisTab">
-            <div class="card">
-              <div class="card-head"><h3>Fuel Usage Analysis</h3><span class="tiny-badge badge-success">Optimized</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Average mpg</label><input type="text" value="16.8" /></div>
-                <div class="form-field"><label>Consumption trend</label><input type="text" value="-3.4%" /></div>
-              </div>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="remindersTab">
-            <div class="card">
-              <div class="card-head"><h3>Reminders</h3><span class="tiny-badge badge-warning">Due soon</span></div>
-              <table class="data-table">
-                <thead><tr><th>Reminder</th><th>Vehicle</th><th>Due</th></tr></thead>
-                <tbody><tr><td>Oil change</td><td>SC-1042</td><td>3 days</td></tr></tbody>
-              </table>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="maintenanceCostAnalysisTab">
-            <div class="card">
-              <div class="card-head"><h3>Maintenance Cost Analysis</h3><span class="tiny-badge badge-success">Reviewed</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Monthly spend</label><input type="text" value="$19,430" /></div>
-                <div class="form-field"><label>Variance</label><input type="text" value="-7.2%" /></div>
-              </div>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="adminTab">
-            <div class="card">
-              <div class="card-head"><h3>Admin Corner</h3><span class="tiny-badge badge-warning">Security</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>User Role</label><input type="text" value="Fleet Administrator" /></div>
-                <div class="form-field"><label>Access Level</label><input type="text" value="Full Access" /></div>
-                <div class="form-field"><label>Department</label><input type="text" value="Facilities Management" /></div>
-                <div class="form-field"><label>Audit Log</label><input type="text" value="24 entries today" /></div>
-              </div>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="settingsTab">
-            <div class="card">
-              <div class="card-head"><h3>Settings</h3><span class="tiny-badge badge-success">Configured</span></div>
-              <div class="form-grid">
-                <div class="form-field"><label>Theme</label><input type="text" value="Corporate Navy / Blue" /></div>
-                <div class="form-field"><label>Notifications</label><input type="text" value="Enabled" /></div>
-                <div class="form-field"><label>Data Sync</label><input type="text" value="OneDrive / SharePoint" /></div>
-                <div class="form-field"><label>Backup</label><input type="text" value="Daily" /></div>
-              </div>
-              <div class="button-row"><button class="utility-btn back-to-dashboard" type="button">Back</button></div>
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const loginShell = document.getElementById('loginShell');
-    const appShell = document.getElementById('appShell');
-    const userRoleEl = document.getElementById('userRole');
-    const demoAccounts = {
-      'admin@musc.edu': { pin: '1234', role: 'Fleet Administrator', label: 'Fleet Administrator' },
-      'manager@musc.edu': { pin: '5678', role: 'Operations Manager', label: 'Operations Manager' },
-      'supervisor@musc.edu': { pin: '2468', role: 'Supervisor', label: 'Supervisor' },
-      'technician@musc.edu': { pin: '1357', role: 'Technician', label: 'Technician' }
-    };
-
-    function generateOtp() {
-      const otp = String(Math.floor(100000 + Math.random() * 900000));
-      const msg = document.getElementById('otpMessage');
-      msg.textContent = 'OTP sent to your Outlook email: ' + otp + ' (demo value for testing)';
-      msg.classList.add('visible');
-      document.getElementById('otpCode').value = otp;
+<script>
+    function switchTab(event, tabId) {
+        event.preventDefault();
+        
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Remove active class from nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // Show target tab and highlight link
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
     }
-    function forgotPassword() {
-      alert('Password reset instructions will be sent to your MUSC Outlook email address.');
-    }
-    function verifyOtp() {
-      const val = document.getElementById('otpCode').value.trim();
-      if (!val) { alert('Please enter the OTP code from Outlook.'); return; }
-      alert('OTP verified successfully.');
-    }
-    document.getElementById('loginButton').addEventListener('click', function () {
-      const email = document.getElementById('email').value.trim().toLowerCase();
-      const pin = document.getElementById('password').value.trim();
-      if (!email || !pin) { alert('Please enter your MUSC email and password/PIN.'); return; }
+</script>
 
-      const account = demoAccounts[email];
-      if (account && account.pin === pin) {
-        userRoleEl.textContent = account.role;
-        loginShell.style.display = 'none';
-        appShell.classList.add('visible');
-        return;
-      }
-
-      if (email.includes('@musc.edu') && pin.length === 4) {
-        userRoleEl.textContent = 'Demo Access User';
-        loginShell.style.display = 'none';
-        appShell.classList.add('visible');
-        return;
-      }
-
-      alert('Invalid credentials. Use one of the demo access accounts shown above.');
-    });
-    const mileageStorageKey = 'fm-phoenix-mileage-records';
-
-    function getMileageRecords() {
-      try {
-        const raw = localStorage.getItem(mileageStorageKey);
-        return raw ? JSON.parse(raw) : [];
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function renderMileageRecords() {
-      const list = document.getElementById('tripRecordList');
-      if (!list) return;
-      const records = getMileageRecords();
-      if (!records.length) {
-        list.innerHTML = '<div class="record-item"><div><strong>No trip records yet</strong><small>Submitted vehicle log rows will appear here.</small></div><span class="tiny-badge badge-warning">Waiting</span></div>';
-        return;
-      }
-
-      list.innerHTML = records.slice().reverse().map((record) => `
-        <div class="record-item">
-          <div>
-            <strong>${record.vehicleUnit || 'Vehicle'} • ${record.driverName || 'Driver'}</strong>
-            <small>${record.tripDate || 'Date'} • ${record.tripStatus || 'Status'} • ${record.jobFunction || 'Job'}</small>
-          </div>
-          <span class="tiny-badge ${record.tripStatus === 'Completed' ? 'badge-success' : 'badge-warning'}">${record.tripStatus || 'Draft'}</span>
-        </div>
-      `).join('');
-    }
-
-    function readImageFile(file) {
-      if (!file) return Promise.resolve('');
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error('Unable to read signature image.'));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function saveMileageRecord() {
-      const form = document.getElementById('mileageForm');
-      const fileInput = document.getElementById('signatureImage');
-      const signatureData = fileInput && fileInput.files && fileInput.files[0]
-        ? await readImageFile(fileInput.files[0])
-        : '';
-
-      const trip = {
-        id: Date.now(),
-        tripDate: document.getElementById('tripDate').value,
-        driverName: document.getElementById('driverName').value,
-        vehicleUnit: document.getElementById('vehicleUnit').value,
-        jobFunction: document.getElementById('jobFunction').value,
-        startOdometer: document.getElementById('startOdometer').value,
-        endOdometer: document.getElementById('endOdometer').value,
-        tripFrom: document.getElementById('tripFrom').value,
-        tripTo: document.getElementById('tripTo').value,
-        localTravel: document.getElementById('localTravel').value,
-        passengers: document.getElementById('passengers').value,
-        fuelLevel: document.getElementById('fuelLevel').value,
-        tripStatus: document.getElementById('tripStatus').value,
-        purposeOfTrip: document.getElementById('purposeOfTrip').value,
-        signatureImage: signatureData,
-        createdAt: new Date().toISOString()
-      };
-
-      const records = getMileageRecords();
-      records.push(trip);
-      localStorage.setItem(mileageStorageKey, JSON.stringify(records));
-      renderMileageRecords();
-      alert('Trip saved successfully to the local fleet database record store.');
-      form.reset();
-      document.getElementById('signaturePreview').textContent = 'Awaiting signature image upload';
-    }
-
-    document.getElementById('saveMileageBtn').addEventListener('click', saveMileageRecord);
-    document.getElementById('draftMileageBtn').addEventListener('click', function () {
-      alert('Draft saved. This mock workflow is ready for future sync to Microsoft 365 / SharePoint storage.');
-    });
-    document.getElementById('reviewMileageBtn').addEventListener('click', function () {
-      alert('Review complete. The mileage record is ready for supervisor approval and month-end PDF generation.');
-    });
-    function goToDashboard() {
-      document.querySelectorAll('.sidebar-tab').forEach(item => item.classList.remove('active'));
-      const dashboardTabButton = document.querySelector('[data-target="dashboardTab"]');
-      if (dashboardTabButton) dashboardTabButton.classList.add('active');
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      const dashboardTab = document.getElementById('dashboardTab');
-      if (dashboardTab) dashboardTab.classList.add('active');
-    }
-
-    document.getElementById('backMileageBtn').addEventListener('click', goToDashboard);
-    document.querySelectorAll('.back-to-dashboard').forEach((button) => {
-      button.addEventListener('click', goToDashboard);
-    });
-
-    document.getElementById('signatureImage').addEventListener('change', async function () {
-      const file = this.files && this.files[0];
-      if (!file) return;
-      const preview = document.getElementById('signaturePreview');
-      const data = await readImageFile(file);
-      preview.innerHTML = '<img src="' + data + '" alt="Driver signature" style="max-width: 180px; max-height: 80px; object-fit: contain; border-radius: 8px; border: 1px solid #dfe7f0; background: white;" />';
-    });
-
-    document.querySelectorAll('.sidebar-tab').forEach((tabButton) => {
-      tabButton.addEventListener('click', function () {
-        document.querySelectorAll('.sidebar-tab').forEach(item => item.classList.remove('active'));
-        this.classList.add('active');
-        const target = this.dataset.target;
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        const tab = document.getElementById(target);
-        if (tab) tab.classList.add('active');
-      });
-    });
-
-    renderMileageRecords();
-  </script>
 </body>
 </html>
+
+```
