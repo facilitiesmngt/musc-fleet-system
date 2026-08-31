@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mileage Log Management | FM Phoenix</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <strong>FM Phoenix</strong>
+          <span>Fleet System</span>
+        </div>
+      </div>
+
+      <nav>
+        <a class="nav-link" href="index.html">1. Dashboard</a>
+        <a class="nav-link" href="driver.html">2. Vehicle / Asset Management</a>
+        <a class="nav-link" href="index.html">3. Fleet Map</a>
+        <a class="nav-link" href="fuel-management.html">4. Fuel Management</a>
+        <a class="nav-link" href="reservation.html">5. Asset / Vehicle Reservation</a>
+        <a class="nav-link" href="index.html">6. Service / Maintenance</a>
+        <a class="nav-link active" href="mileage-log-management.html">7. Mileage Logs Management</a>
+        <a class="nav-link" href="index.html">8. Fleet Operations</a>
+        <a class="nav-link" href="index.html">9. Defensive Driving Course</a>
+        <a class="nav-link" href="index.html">10. Vendor Management</a>
+        <a class="nav-link" href="index.html">11. Reports &amp; Data Analysis</a>
+        <a class="nav-link" href="index.html">12. Fuel Usage Analysis</a>
+        <a class="nav-link" href="index.html">13. Reminders</a>
+        <a class="nav-link" href="index.html">14. Maintenance Cost Analysis</a>
+        <a class="nav-link" href="index.html">15. Admin Corner (Needs access approval)</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        Emergency support: 843-792-4119<br />
+        Facility Response Center
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-shell">
+        <div class="page-header">
+          <h1>Mileage Log Management</h1>
+          <span class="page-tag">Phone-ready form</span>
+        </div>
+
+        <div class="page-card">
+          <h2>Trip submission form</h2>
+          <div id="mileageStatus" class="alert ok show">Ready for trip entry and PDF generation.</div>
+          <form id="mileageForm">
+            <div class="row">
+              <div>
+                <label for="tripDate">Date</label>
+                <input id="tripDate" name="tripDate" type="date" value="2026-08-31" required>
+              </div>
+              <div>
+                <label for="driverName">Driver / Operator</label>
+                <input id="driverName" name="driverName" type="text" value="J. Smith" required>
+              </div>
+              <div>
+                <label for="vehicleUnit">Vehicle Unit</label>
+                <select id="vehicleUnit" name="vehicleUnit">
+                  <option>SC-1042</option>
+                  <option>SC-2077</option>
+                  <option>SC-3311</option>
+                </select>
+              </div>
+              <div>
+                <label for="jobFunction">Job Function</label>
+                <input id="jobFunction" name="jobFunction" type="text" value="Facilities Support">
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:16px;">
+              <div>
+                <label for="startOdometer">Starting Odometer</label>
+                <input id="startOdometer" name="startOdometer" type="number" value="12340">
+              </div>
+              <div>
+                <label for="endOdometer">Ending Odometer</label>
+                <input id="endOdometer" name="endOdometer" type="number" value="12405">
+              </div>
+              <div>
+                <label for="tripFrom">From</label>
+                <input id="tripFrom" name="tripFrom" type="text" value="Fleet Garage">
+              </div>
+              <div>
+                <label for="tripTo">To</label>
+                <input id="tripTo" name="tripTo" type="text" value="MUSC Main Campus">
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:16px;">
+              <div>
+                <label for="localTravel">Local Travel</label>
+                <select id="localTravel" name="localTravel">
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+              <div>
+                <label for="passengers">Passengers</label>
+                <input id="passengers" name="passengers" type="number" value="1">
+              </div>
+              <div>
+                <label for="fuelLevel">Fuel Level</label>
+                <input id="fuelLevel" name="fuelLevel" type="text" value="75%">
+              </div>
+              <div>
+                <label for="tripStatus">Trip Status</label>
+                <select id="tripStatus" name="tripStatus">
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed" selected>Completed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:16px;">
+              <div style="flex-basis:100%;">
+                <label for="purposeOfTrip">Purpose of Trip</label>
+                <textarea id="purposeOfTrip" name="purposeOfTrip">Routine facilities support and inspection check.</textarea>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:16px;">
+              <div style="flex-basis:100%;">
+                <label for="signatureImage">Driver Signature</label>
+                <input id="signatureImage" name="signatureImage" type="file" accept="image/*" capture="environment">
+                <div class="signature-box" id="signaturePreview">Awaiting signature image upload</div>
+              </div>
+            </div>
+
+            <div class="button-row">
+              <button type="button" class="primary-btn" id="saveMileageBtn">Save Trip to Database</button>
+              <button type="button" class="secondary-btn">Save Draft</button>
+              <button type="button" class="utility-btn">Review &amp; Submit</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="page-card">
+          <h2>Submission workflow</h2>
+          <div class="stat-grid">
+            <div class="stat-box"><span>Trip rows</span><strong>48</strong></div>
+            <div class="stat-box"><span>Pending review</span><strong>06</strong></div>
+            <div class="stat-box"><span>Monthly PDF</span><strong>12</strong></div>
+            <div class="stat-box"><span>Archive ready</span><strong>04</strong></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/site.js"></script>
+</body>
+</html>

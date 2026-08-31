@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Trip Log | FM Phoenix</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <strong>FM Phoenix</strong>
+          <span>Fleet System</span>
+        </div>
+      </div>
+
+      <nav>
+        <a class="nav-link" href="index.html">1. Dashboard</a>
+        <a class="nav-link active" href="driver.html">2. Vehicle / Asset Management</a>
+        <a class="nav-link" href="index.html">3. Fleet Map</a>
+        <a class="nav-link" href="fuel-management.html">4. Fuel Management</a>
+        <a class="nav-link" href="reservation.html">5. Asset / Vehicle Reservation</a>
+        <a class="nav-link" href="index.html">6. Service / Maintenance</a>
+        <a class="nav-link" href="mileage-log-management.html">7. Mileage Logs Management</a>
+        <a class="nav-link" href="index.html">8. Fleet Operations</a>
+        <a class="nav-link" href="index.html">9. Defensive Driving Course</a>
+        <a class="nav-link" href="index.html">10. Vendor Management</a>
+        <a class="nav-link" href="index.html">11. Reports &amp; Data Analysis</a>
+        <a class="nav-link" href="index.html">12. Fuel Usage Analysis</a>
+        <a class="nav-link" href="index.html">13. Reminders</a>
+        <a class="nav-link" href="index.html">14. Maintenance Cost Analysis</a>
+        <a class="nav-link" href="index.html">15. Admin Corner (Needs access approval)</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        Emergency support: 843-792-4119<br />
+        Facility Response Center
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-shell">
+        <div class="page-header">
+          <h1>Vehicle Trip Log</h1>
+          <span class="page-tag">Operations</span>
+        </div>
+
+        <div class="page-card">
+          <h2>Trip record</h2>
+          <div class="row">
+            <div>
+              <label>Vehicle Tag</label>
+              <select>
+                <option>SC-1042</option>
+                <option>SC-2077</option>
+                <option>SC-3311</option>
+              </select>
+            </div>
+            <div>
+              <label>Driver</label>
+              <input type="text" value="J. Smith" />
+            </div>
+            <div>
+              <label>Trip Status</label>
+              <select>
+                <option>In Progress</option>
+                <option selected>Completed</option>
+              </select>
+            </div>
+            <div>
+              <label>Extended Trip</label>
+              <select>
+                <option>No</option>
+                <option>Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:16px;">
+            <div>
+              <label>Beginning Odometer</label>
+              <input type="number" value="12340" />
+            </div>
+            <div>
+              <label>Ending Odometer</label>
+              <input type="number" value="12405" />
+            </div>
+            <div>
+              <label>Fuel Level</label>
+              <input type="text" value="75%" />
+            </div>
+            <div>
+              <label>Passengers</label>
+              <input type="number" value="1" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:16px;">
+            <div>
+              <label>From</label>
+              <input type="text" value="Fleet Garage" />
+            </div>
+            <div>
+              <label>To</label>
+              <input type="text" value="MUSC Main Campus" />
+            </div>
+            <div>
+              <label>Job Function</label>
+              <input type="text" value="Facilities Support" />
+            </div>
+            <div>
+              <label>Local Travel</label>
+              <select>
+                <option>No</option>
+                <option>Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:16px;">
+            <div>
+              <label>Started At</label>
+              <input type="datetime-local" value="2026-08-02T08:15" />
+            </div>
+            <div>
+              <label>Ended At</label>
+              <input type="datetime-local" value="2026-08-02T09:10" />
+            </div>
+            <div>
+              <label>Issue Category</label>
+              <select>
+                <option>None</option>
+                <option>Mechanical</option>
+                <option>Safety</option>
+                <option>Electrical</option>
+              </select>
+            </div>
+            <div>
+              <label>Reported By</label>
+              <input type="text" value="Supervisor" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:16px;">
+            <div style="flex-basis:100%;">
+              <label>Issue Note</label>
+              <textarea placeholder="Describe any vehicle issue or warning..."></textarea>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:16px;">
+            <div style="flex-basis:100%;">
+              <label>Driver Signature</label>
+              <div class="signature-box">Signature capture area</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" type="button">Start Trip</button>
+            <button class="secondary-btn" type="button">End Trip</button>
+            <button class="utility-btn" type="button">Back</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

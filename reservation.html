@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Reservation | FM Phoenix</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <strong>FM Phoenix</strong>
+          <span>Fleet System</span>
+        </div>
+      </div>
+
+      <nav>
+        <a class="nav-link" href="index.html">1. Dashboard</a>
+        <a class="nav-link" href="driver.html">2. Vehicle / Asset Management</a>
+        <a class="nav-link" href="index.html">3. Fleet Map</a>
+        <a class="nav-link" href="fuel-management.html">4. Fuel Management</a>
+        <a class="nav-link active" href="reservation.html">5. Asset / Vehicle Reservation</a>
+        <a class="nav-link" href="index.html">6. Service / Maintenance</a>
+        <a class="nav-link" href="mileage-log-management.html">7. Mileage Logs Management</a>
+        <a class="nav-link" href="index.html">8. Fleet Operations</a>
+        <a class="nav-link" href="index.html">9. Defensive Driving Course</a>
+        <a class="nav-link" href="index.html">10. Vendor Management</a>
+        <a class="nav-link" href="index.html">11. Reports &amp; Data Analysis</a>
+        <a class="nav-link" href="index.html">12. Fuel Usage Analysis</a>
+        <a class="nav-link" href="index.html">13. Reminders</a>
+        <a class="nav-link" href="index.html">14. Maintenance Cost Analysis</a>
+        <a class="nav-link" href="index.html">15. Admin Corner (Needs access approval)</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        Emergency support: 843-792-4119<br />
+        Facility Response Center
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-shell">
+        <div class="page-header">
+          <h1>Vehicle Reservation</h1>
+          <span class="page-tag">Calendar</span>
+        </div>
+
+        <div class="page-card">
+          <h2>Reserve a fleet asset</h2>
+          <div class="row">
+            <div>
+              <label>Vehicle</label>
+              <select>
+                <option>SC-1042</option>
+                <option>SC-2077</option>
+                <option>SC-3311</option>
+              </select>
+            </div>
+            <div>
+              <label>Reserved By</label>
+              <input type="text" value="Engineering Team" />
+            </div>
+            <div>
+              <label>From Date</label>
+              <input type="date" />
+            </div>
+            <div>
+              <label>To Date</label>
+              <input type="date" />
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" type="button">Save Reservation</button>
+            <button class="secondary-btn" type="button">Back</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

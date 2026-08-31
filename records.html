@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mileage Log Records | FM Phoenix</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <strong>FM Phoenix</strong>
+          <span>Fleet System</span>
+        </div>
+      </div>
+
+      <nav>
+        <a class="nav-link" href="index.html">1. Dashboard</a>
+        <a class="nav-link" href="driver.html">2. Vehicle / Asset Management</a>
+        <a class="nav-link" href="index.html">3. Fleet Map</a>
+        <a class="nav-link" href="fuel-management.html">4. Fuel Management</a>
+        <a class="nav-link" href="reservation.html">5. Asset / Vehicle Reservation</a>
+        <a class="nav-link" href="index.html">6. Service / Maintenance</a>
+        <a class="nav-link active" href="mileage-log-management.html">7. Mileage Logs Management</a>
+        <a class="nav-link" href="index.html">8. Fleet Operations</a>
+        <a class="nav-link" href="index.html">9. Defensive Driving Course</a>
+        <a class="nav-link" href="index.html">10. Vendor Management</a>
+        <a class="nav-link" href="index.html">11. Reports &amp; Data Analysis</a>
+        <a class="nav-link" href="index.html">12. Fuel Usage Analysis</a>
+        <a class="nav-link" href="index.html">13. Reminders</a>
+        <a class="nav-link" href="index.html">14. Maintenance Cost Analysis</a>
+        <a class="nav-link" href="index.html">15. Admin Corner (Needs access approval)</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        Emergency support: 843-792-4119<br />
+        Facility Response Center
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-shell">
+        <div class="page-header">
+          <h1>Mileage Log Records</h1>
+          <span class="page-tag">Monthly archive</span>
+        </div>
+
+        <div class="page-card">
+          <h2>Generate and review mileage logs</h2>
+          <div class="row">
+            <div>
+              <label>Vehicle</label>
+              <select id="vehicleTag">
+                <option>SC-1042</option>
+                <option>SC-2077</option>
+                <option>SC-3311</option>
+              </select>
+            </div>
+            <div>
+              <label>Month / Year</label>
+              <input type="month" value="2026-08" />
+            </div>
+            <div>
+              <label>Agency Code</label>
+              <input type="text" value="FAC-03" />
+            </div>
+            <div>
+              <label>Department</label>
+              <select>
+                <option>All</option>
+                <option>Facilities Maintenance</option>
+                <option>Clinical Engineering</option>
+                <option>Utilities &amp; Medical Gas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" type="button">Load Trips</button>
+            <button class="secondary-btn" type="button">Generate Individual PDF</button>
+            <button class="utility-btn" type="button">Generate Master PDF</button>
+          </div>
+        </div>
+
+        <div class="page-card">
+          <h2>Trip list</h2>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Driver</th>
+                  <th>Start Odo</th>
+                  <th>End Odo</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Job Function</th>
+                  <th>Passengers</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>08/02/2026</td>
+                  <td>J. Smith</td>
+                  <td>12340</td>
+                  <td>12405</td>
+                  <td>Fleet Garage</td>
+                  <td>MUSC Main Campus</td>
+                  <td>Facilities Support</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>08/04/2026</td>
+                  <td>R. White</td>
+                  <td>12405</td>
+                  <td>12487</td>
+                  <td>Main Campus</td>
+                  <td>Clinical Engineering</td>
+                  <td>Repair Response</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
