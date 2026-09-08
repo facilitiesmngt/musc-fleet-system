@@ -92,3 +92,42 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+// ====================================
+// Mileage Management Tabs
+// ====================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  if (tabButtons.length > 0) {
+
+    tabButtons.forEach(button => {
+
+      button.addEventListener('click', function () {
+
+        tabButtons.forEach(btn => {
+          btn.classList.remove('active');
+        });
+
+        tabPanels.forEach(panel => {
+          panel.classList.remove('active');
+        });
+
+        this.classList.add('active');
+
+        const targetPanel =
+          document.getElementById(this.dataset.tab);
+
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+
+      });
+
+    });
+
+  }
+
+});
