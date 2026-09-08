@@ -188,32 +188,32 @@ app.get('/api/fuel-logs/:vehicleId', async (req, res) => {
 });
 
 // ===== MILEAGE LOGS ENDPOINTS =====
-app.get('/api/mileage-logs', async (req, res) => {
+// UPDATE Mileage Log
+app.put('/api/mileage-logs/:id', async (req, res) => {
   try {
-    const { resources: mileageLogs } = await containers["mileage-logs"].items.query("SELECT * FROM c").fetchAll();
-    res.json(mileageLogs);
+    const updatedLog = req.body;
+
+    const { resource } = await containers["mileage-logs"]
+      .item(req.params.id, updatedLog.vehicleId)
+      .replace(updatedLog);
+
+    res.json(resource);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.post('/api/mileage-logs', async (req, res) => {
+// DELETE Mileage Log
+app.delete('/api/mileage-logs/:id/:vehicleId', async (req, res) => {
   try {
-    const mileageLog = { ...req.body, id: req.body.mileageLogId || `mileage-${Date.now()}` };
-    const { resource } = await containers["mileage-logs"].items.create(mileageLog);
-    res.status(201).json(resource);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+    await containers["mileage-logs"]
+      .item(req.params.id, req.params.vehicleId)
+      .delete();
 
-app.get('/api/mileage-logs/:vehicleId', async (req, res) => {
-  try {
-    const query = `SELECT * FROM c WHERE c.vehicleId = @vehicleId`;
-    const { resources } = await containers["mileage-logs"].items.query(query, {
-      parameters: [{ name: "@vehicleId", value: req.params.vehicleId }]
-    }).fetchAll();
-    res.json(resources);
+    res.json({
+      success: true,
+      message: "Mileage log deleted"
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
